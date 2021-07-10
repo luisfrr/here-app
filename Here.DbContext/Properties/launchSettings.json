@@ -1,0 +1,7 @@
+{
+  "profiles": {
+    "Here.DbContext": {
+      "commandName": "Project"
+    }
+  }
+}
