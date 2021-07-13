@@ -1,0 +1,32 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:25707",
+      "sslPort": 44337
+    }
+  },
+  "profiles": {
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "HEREAPP_OVERWATCH_USER": "luisfrr27@gmail.com",
+        "HEREAPP_OVERWATCH_PASS": "euE!S@Gr4#"
+      }
+    },
+    "Here.Web": {
+      "commandName": "Project",
+      "dotnetRunMessages": "true",
+      "launchBrowser": true,
+      "applicationUrl": "https://localhost:5001;http://localhost:5000",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "HEREAPP_OVERWATCH_USER": "luisfrr27@gmail.com",
+        "HEREAPP_OVERWATCH_PASS": "euE!S@Gr4#"
+      }
+    }
+  }
+}

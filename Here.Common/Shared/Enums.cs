@@ -29,8 +29,8 @@ namespace Here.Common.Shared
 
   public enum Roles
   {
-    [Description("Overwatch")]
-    OVERWATCH = 1,
+    [Description("Superuser")]
+    SUPERUSER = 1,
     [Description("Administrator")]
     ADMINISTRATOR = 2,
     [Description("Owner")]
