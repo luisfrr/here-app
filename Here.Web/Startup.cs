@@ -1,7 +1,7 @@
 using Here.DbContext;
 using Here.Models.Domain;
 using Here.Web.Configurations;
-using Here.Web.Data;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -61,21 +61,25 @@ namespace Here.Web
 
       })
         .AddRoles<ApplicationRole>()
-        .AddEntityFrameworkStores<HereDbContext>();
+        .AddEntityFrameworkStores<HereDbContext>()
+        .AddClaimsPrincipalFactory<UserClaimsPrincipalFactory>();
 
       services.ConfigureApplicationCookie(options =>
       {
-        // Cookie settings
-        options.Cookie.HttpOnly = true;
-        options.ExpireTimeSpan = TimeSpan.FromMinutes(5);
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
 
-        options.LoginPath = "/Home/Login";
-        options.AccessDeniedPath = "";
+        options.Cookie.Name = "Here.Identity.Cookie";
+        options.Cookie.HttpOnly = true;
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(20);
+        
+        options.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
         options.SlidingExpiration = true;
       });
 
-
-      services.AddRazorPages();
+      //services.AddRazorPages();
+      services.AddControllersWithViews();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -106,8 +110,11 @@ namespace Here.Web
 
 			app.UseEndpoints(endpoints =>
 			{
-				endpoints.MapRazorPages();
-			});
+        endpoints.MapControllerRoute(
+          name: "default",
+          pattern: "{controller=Account}/{action=Login}/{id?}");
+        //endpoints.MapRazorPages();
+      });
 		}
 	}
 }

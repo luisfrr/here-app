@@ -1,0 +1,211 @@
+@using Microsoft.AspNetCore.Identity
+@using System.Security.Claims
+@using Here.Models.Domain;
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <meta name="description" content="">
+  <meta name="author" content="Luis Rogel">
+  <meta name="keywords" content="">
+
+  <link rel="shortcut icon" href="~/favicon.ico" />
+
+  @*<link rel="canonical" href="https://demo.adminkit.io/pages-blank.html" />*@
+
+  <title>@ViewData["Title"] - Here </title>
+
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <link class="js-stylesheet" href="~/css/dark.css" rel="stylesheet">
+
+  <style>
+    body {
+      opacity: 0;
+    }
+  </style>
+
+</head>
+
+
+<!--
+  HOW TO USE:
+  data-theme: default (default), dark, light, colored
+  data-layout: fluid (default), boxed
+  data-sidebar-position: left (default), right
+  data-sidebar-layout: default (default), compact
+-->
+
+<body data-theme="dark" data-layout="default" data-sidebar-position="left" data-sidebar-layout="default">
+  <div class="wrapper">
+
+    <nav id="sidebar" class="sidebar js-sidebar">
+
+      <div class="sidebar-content js-simplebar">
+
+        <a class="sidebar-brand" asp-controller="Home" asp-action="Index">
+          <span class="sidebar-brand-text text-center">
+            <img src="~/img/logo/here-logo.png" height="88" width="88" />
+          </span>
+        </a>
+
+        @if (SignInManager.IsSignedIn(User))
+        {
+          <div class="sidebar-user">
+            <div class="d-flex justify-content-center">
+              <div class="flex-shrink-0">
+                <img src="@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Uri).Value"
+                     class="avatar img-fluid rounded me-1" alt="@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname).Value" />
+              </div>
+              <div class="flex-grow-1 ps-2">
+                <a class="sidebar-user-title dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                  @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Surname).Value
+                </a>
+                <div class="dropdown-menu dropdown-menu-start">
+                  <a class="dropdown-item" href="pages-profile.html"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                  <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="pages-settings.html">
+                    <i class="align-middle me-1" data-feather="settings"></i>
+                    Settings & Privacy
+                  </a>
+                  <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" asp-controller="Account" asp-action="Logout" asp-route-returnUrl="">
+                    <i class="align-middle me-1" data-feather="log-out"></i>
+                    Logout
+                  </a>
+                </div>
+
+                <div class="sidebar-user-subtitle">@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role).Value</div>
+              </div>
+            </div>
+          </div>
+        }
+
+        <partial name="_Menu" />
+
+      </div>
+    </nav>
+
+    <div class="main">
+
+      <nav class="navbar navbar-expand navbar-light navbar-bg">
+
+        <a class="sidebar-toggle js-sidebar-toggle">
+          <i class="hamburger align-self-center"></i>
+        </a>
+
+        <form class="d-none d-sm-inline-block">
+          <div class="input-group input-group-navbar">
+            <input type="text" class="form-control" placeholder="Search…" aria-label="Search">
+            <button class="btn" type="button">
+              <i class="align-middle" data-feather="search"></i>
+            </button>
+          </div>
+        </form>
+
+        <div class="navbar-collapse collapse">
+
+          <ul class="navbar-nav navbar-align">
+
+            <partial name="_Notifications" />
+
+            <li class="nav-item dropdown">
+              <a class="nav-flag dropdown-toggle" href="#" id="languageDropdown" data-bs-toggle="dropdown">
+                <img src="~/img/flags/us.png" alt="English" />
+              </a>
+              <div class="dropdown-menu dropdown-menu-end" aria-labelledby="languageDropdown">
+                <a class="dropdown-item" href="#">
+                  <img src="~/img/flags/us.png" alt="English" width="20" class="align-middle me-1" />
+                  <span class="align-middle">English</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <img src="~/img/flags/es.png" alt="Spanish" width="20" class="align-middle me-1" />
+                  <span class="align-middle">Spanish</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <img src="~/img/flags/ru.png" alt="Russian" width="20" class="align-middle me-1" />
+                  <span class="align-middle">Russian</span>
+                </a>
+                <a class="dropdown-item" href="#">
+                  <img src="~/img/flags/de.png" alt="German" width="20" class="align-middle me-1" />
+                  <span class="align-middle">German</span>
+                </a>
+              </div>
+            </li>
+
+            <li class="nav-item">
+              <a class="nav-icon js-fullscreen d-none d-lg-block" href="#">
+                <div class="position-relative">
+                  <i class="align-middle" data-feather="maximize"></i>
+                </div>
+              </a>
+            </li>
+
+            @if (SignInManager.IsSignedIn(User))
+            {
+              <li class="nav-item dropdown">
+                <a class="nav-icon pe-md-0 dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                  <img src="@User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Uri).Value" class="avatar img-fluid rounded" alt="@User.Identity.Name" />
+                </a>
+                <div class="dropdown-menu dropdown-menu-end">
+                  <a class="dropdown-item" asp-controller="Account" asp-action="Profile"><i class="align-middle me-1" data-feather="user"></i> Profile</a>
+                  <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="pie-chart"></i> Analytics</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="pages-settings.html">
+                    <i class="align-middle me-1" data-feather="settings"></i> Settings & Privacy
+                  </a>
+                  <a class="dropdown-item" href="#"><i class="align-middle me-1" data-feather="help-circle"></i> Help Center</a>
+                  <div class="dropdown-divider"></div>
+                  <a class="dropdown-item" href="#">Log out</a>
+                </div>
+              </li>
+            }
+
+          </ul>
+        </div>
+      </nav>
+
+      <main class="content">
+        <div class="container-fluid p-0">
+
+          @RenderBody()
+
+        </div>
+      </main>
+
+      <footer class="footer">
+        <div class="container-fluid">
+          <div class="row text-muted">
+            <div class="col-6 text-start">
+              <p class="mb-0">
+                <a asp-controller="Home" asp-action="Index" class="text-muted"><strong>Here</strong></a> &copy; @DateTime.Now.Year
+              </p>
+            </div>
+            <div class="col-6 text-end">
+
+              Hecho con <i data-feather="heart" stroke="red" stroke-width="1"></i> por Luis Rogel.
+
+            </div>
+          </div>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="~/js/site.js"></script>
+  <partial name="_JQueryScripts" />
+  <partial name="_ValidationScriptsPartial" />
+
+</body>
+
+</html>
