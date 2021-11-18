@@ -51,7 +51,6 @@ namespace Here.Web.Configurations
             userManager.AddToRoleAsync(user, EnumsExtension.GetDescription(Roles.SUPERUSER)).Wait();
 
         }
-
       }
     }
 
